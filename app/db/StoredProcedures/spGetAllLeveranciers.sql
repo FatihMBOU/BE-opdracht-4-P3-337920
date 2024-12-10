@@ -2,7 +2,7 @@
 -- Doel: Opvragen van alle leveranciers en het aantal verschillende producten dat zij leveren
 -- Versie: 01
 -- Datum: 26-09-2024
--- Auteur: Daniel van Grol
+-- Auteur: Fatih Kuzu
 ******************************************************/
 
 -- Selecteer de juiste database voor je stored procedure
