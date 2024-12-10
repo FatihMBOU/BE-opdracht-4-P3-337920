@@ -47,7 +47,7 @@
                         <?php } else {                              
                             foreach ($data['leveringen'] as $levering) { ?>
                                 <tr>
-                                    <td><?= $levering->DatumLaatsteLevering ?></td>
+                                    <td><?= $levering->DatumLevering ?></td>
                                     <td><?= $levering->DatumEerstVolgendeLevering ?></td>
                                 </tr>
                             <?php } 

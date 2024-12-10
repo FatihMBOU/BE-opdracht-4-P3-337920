@@ -2,16 +2,16 @@
 
 <style>
     .text-right {
-    display: flex;
-    justify-content: flex-end; /* Zorgt ervoor dat de inhoud naar rechts uitgelijnd wordt */
-    gap: 10px; /* Ruimte tussen de knoppen */
-}
+        display: flex;
+        justify-content: flex-end; /* Align content to the right */
+        gap: 10px; /* Space between buttons */
+    }
 </style>
 
 <div class="container">
     <div class="row mt-3">
         <div class="col-12">
-            <!-- Titel van de pagina -->
+            <!-- Page title -->
             <h3><?php echo $data['title']; ?></h3>
         </div>
     </div>
@@ -19,7 +19,7 @@
     <?php if ($data['message']) { ?>
         <div class="row mt-3">
             <div class="col-12">
-                <!-- Foutmelding weergeven -->
+                <!-- Error message -->
                 <div class="alert alert-danger" role="alert">
                     <?= $data['message']; ?>
                 </div>
@@ -28,7 +28,7 @@
     <?php } else { ?>
         <div class="row mt-3">
             <div class="col-12">
-                <!-- Tabel met leveranciers -->
+                <!-- Table with suppliers -->
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -41,20 +41,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (is_null($data['leveranciers'])) { ?>
+                        <?php if (empty($data['leveranciers'])) { ?>
                             <tr>
                                 <td colspan='6' class='text-center'>Geen leveranciers beschikbaar</td>
                             </tr>
                         <?php } else {                              
                             foreach ($data['leveranciers'] as $leverancier) { ?>
                                 <tr>
-                                    <td><?= $leverancier->Naam ?></td>
-                                    <td><?= $leverancier->Contactpersoon ?></td>
-                                    <td><?= $leverancier->Leveranciernummer ?></td>
-                                    <td><?= $leverancier->Mobiel ?></td>
-                                    <td><?= $leverancier->AantalProducten ?></td>
+                                    <td><?= isset($leverancier->Naam) ? $leverancier->Naam : 'N/A' ?></td>
+                                    <td><?= isset($leverancier->Contactpersoon) ? $leverancier->Contactpersoon : 'N/A' ?></td>
+                                    <td><?= isset($leverancier->Leveranciernummer) ? $leverancier->Leveranciernummer : 'N/A' ?></td>
+                                    <td><?= isset($leverancier->Mobiel) ? $leverancier->Mobiel : 'N/A' ?></td>
+                                    <td><?= isset($leverancier->AantalProducten) ? $leverancier->AantalProducten : '0' ?></td>
                                     <td class='text-center'>
-                                        <!-- Link naar geleverde producten -->
+                                        <!-- Link to delivered products -->
                                         <a href='<?= URLROOT . "/leverancier/geleverdeProducten/$leverancier->Id" ?>' class='btn btn-info'>
                                             <i class='bi bi-box-seam'></i>
                                         </a>
