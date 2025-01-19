@@ -133,10 +133,30 @@ class Leverancier extends BaseController
         }
     }
 
-    private function setFlash($name, $message)
-    {
-        if (!isset($_SESSION)) {
-            session_start();
+    public function wijzigLeverancier($id)
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Sanitize POST data
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $data = [
+            'id' => $id,
+            'naam' => trim($_POST['naam']),
+            'contactpersoon' => trim($_POST['contactpersoon']),
+            'leveranciernummer' => trim($_POST['leveranciernummer']),
+            'mobiel' => trim($_POST['mobiel']),
+            'straatnaam' => trim($_POST['straatnaam']),
+            'huisnummer' => trim($_POST['huisnummer']),
+            'postcode' => trim($_POST['postcode']),
+            'stad' => trim($_POST['stad']),
+            'naam_err' => '',
+            'contactpersoon_err' => '',
+            'leveranciernummer_err' => '',
+            'mobiel_err' => '',
+            'straatnaam_err' => '',
+            'huisnummer_err' => '',
+            'postcode_err' => '',
+            'stad_err' => ''
+        ];
         }
         $_SESSION[$name] = $message;
     }
