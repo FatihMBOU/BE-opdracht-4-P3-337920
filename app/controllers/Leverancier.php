@@ -39,6 +39,32 @@ class Leverancier extends BaseController
         $this->view('leverancier/index', $data);
     }
 
+    public function wijzigenLeverancier()
+    {
+        // Initialiseer data array voor de view
+        $data = [
+            'title' => 'Wijzig Leverancier',
+            'leveranciers' => NULL,
+            'message' => NULL
+        ];
+        try {
+            // Haal alle leveranciers op
+            $result = $this->leverancierModel->getAllLeveranciers();
+            if (empty($result)) {
+                throw new Exception("Geen resultaten gevonden");
+            }
+            // Zet de opgehaalde data in de data array
+            $data['leveranciers'] = $result;
+        } catch (Exception $e) {
+            // Log de fout en zet de foutmelding in de data array
+            error_log($e->getMessage());
+            $data['message'] = "Er is een fout opgetreden in de database: " . $e->getMessage();
+        }
+        // Laad de view met de data
+        $this->view('leverancier/wijzigenLeverancier', $data);
+    }
+
+
     public function geleverdeProducten($leverancierId)
     {
         // Initialiseer data array voor de view
