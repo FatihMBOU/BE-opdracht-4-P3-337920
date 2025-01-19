@@ -123,4 +123,25 @@ class LeverancierModel
             throw new Exception("Database query failed: " . $e->getMessage());
         }
     }
+    public function updateLeverancier($data)
+    {
+        $this->db->query('UPDATE leveranciers SET Naam = :naam, Contactpersoon = :contactpersoon, Leveranciernummer = :leveranciernummer, Mobiel = :mobiel, Straatnaam = :straatnaam, Huisnummer = :huisnummer, Postcode = :postcode, Stad = :stad WHERE id = :id');
+        // Bind values
+        $this->db->bind(':id', $data['id']);
+        $this->db->bind(':naam', $data['naam']);
+        $this->db->bind(':contactpersoon', $data['contactpersoon']);
+        $this->db->bind(':leveranciernummer', $data['leveranciernummer']);
+        $this->db->bind(':mobiel', $data['mobiel']);
+        $this->db->bind(':straatnaam', $data['straatnaam']);
+        $this->db->bind(':huisnummer', $data['huisnummer']);
+        $this->db->bind(':postcode', $data['postcode']);
+        $this->db->bind(':stad', $data['stad']);
+    
+        // Execute
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
