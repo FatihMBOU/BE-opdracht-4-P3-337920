@@ -16,21 +16,8 @@ DELIMITER //
 
 CREATE PROCEDURE spGetAllLeveranciers()
 BEGIN
-    SELECT 
-        l.Id,
-        l.Naam,
-        l.Contactpersoon,
-        l.Leveranciernummer,
-        l.Mobiel,
-        COUNT(DISTINCT ppa.ProductId) AS AantalProducten
-    FROM 
-        Leverancier l
-    LEFT JOIN 
-        ProductPerLeverancier ppa ON l.Id = ppa.LeverancierId
-    GROUP BY 
-        l.Id, l.Naam, l.Contactpersoon, l.Leveranciernummer, l.Mobiel
-    ORDER BY 
-        AantalProducten DESC;
+   SELECT id, Naam, Contactpersoon, Leveranciernummer, Mobiel
+    FROM leveranciers;
 END //
 DELIMITER ;
 

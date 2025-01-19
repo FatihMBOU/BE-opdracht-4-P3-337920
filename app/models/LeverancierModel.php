@@ -15,7 +15,7 @@ class LeverancierModel
     {
         try {
             // SQL-query om alle leveranciers en het aantal verschillende producten dat zij leveren op te halen
-            $sql = "CALL spGetAllLeveranciers()";
+            $sql = "SELECT id, Naam, Contactpersoon, Leveranciernummer, Mobiel FROM leverancier";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_OBJ);

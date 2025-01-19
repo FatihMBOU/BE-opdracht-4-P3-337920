@@ -51,8 +51,11 @@
                                     <td><?= $leverancier->Contactpersoon ?></td>
                                     <td><?= $leverancier->Leveranciernummer ?></td>
                                     <td><?= $leverancier->Mobiel ?></td>
-                                    <td><a href="<?= URLROOT; ?>/leverancier/wijzigLeverancier/<?= $leverancier->id ?>" class="btn btn-warning">Wijzig</a></td>
-                                </tr>
+                                    <td>
+                                        <a href="<?= URLROOT; ?>/leverancier/wijzigLeverancier/<?= $leverancier->id ?>" class="btn btn-warning">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                                    </td>                                </tr>
                             <?php } 
                         } ?>
                     </tbody>
