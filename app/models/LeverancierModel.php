@@ -93,8 +93,7 @@ class LeverancierModel
                 JOIN ProductPerLeverancier pl ON l.Id = pl.LeverancierId
                 JOIN Product p ON pl.ProductId = p.Id
                 WHERE p.Id = :productId
-                GROUP BY l.Naam, l.Contactpersoon, l.Mobiel, l.Leveranciernummer
-            ';
+                GROUP BY l.Id';
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
             $stmt->execute();
@@ -108,11 +107,16 @@ class LeverancierModel
         }
     }
 
-    public function getLeverancierById($leverancierId) {
+    public function getLeverancierById($id)
+    {
         try {
-            $sql = 'SELECT * FROM Leverancier WHERE Id = :leverancierId';
+            // SQL-query om een specifieke leverancier en bijbehorende contactgegevens op te halen
+            $sql = "SELECT l.id, l.naam, l.contactpersoon, l.leveranciernummer, l.mobiel, c.Straat AS straatnaam, c.Huisnummer AS huisnummer, c.Postcode AS postcode, c.Stad AS stad
+                    FROM leverancier l
+                    LEFT JOIN contact c ON l.id = c.id
+                    WHERE l.id = :id";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':leverancierId', $leverancierId, PDO::PARAM_INT);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_OBJ);
             $stmt->closeCursor(); // Sluit de vorige resultaatset
@@ -123,25 +127,40 @@ class LeverancierModel
             throw new Exception("Database query failed: " . $e->getMessage());
         }
     }
+
     public function updateLeverancier($data)
     {
-        $this->db->query('UPDATE leveranciers SET Naam = :naam, Contactpersoon = :contactpersoon, Leveranciernummer = :leveranciernummer, Mobiel = :mobiel, Straatnaam = :straatnaam, Huisnummer = :huisnummer, Postcode = :postcode, Stad = :stad WHERE id = :id');
-        // Bind values
-        $this->db->bind(':id', $data['id']);
-        $this->db->bind(':naam', $data['naam']);
-        $this->db->bind(':contactpersoon', $data['contactpersoon']);
-        $this->db->bind(':leveranciernummer', $data['leveranciernummer']);
-        $this->db->bind(':mobiel', $data['mobiel']);
-        $this->db->bind(':straatnaam', $data['straatnaam']);
-        $this->db->bind(':huisnummer', $data['huisnummer']);
-        $this->db->bind(':postcode', $data['postcode']);
-        $this->db->bind(':stad', $data['stad']);
-    
-        // Execute
-        if ($this->db->execute()) {
+        try {
+            // SQL-query om de leverancier bij te werken
+            $sql1 = "UPDATE leverancier SET Naam = :naam, Contactpersoon = :contactpersoon, Leveranciernummer = :leveranciernummer, Mobiel = :mobiel WHERE id = :id";
+            $stmt1 = $this->db->prepare($sql1);
+            $stmt1->bindParam(':id', $data['id'], PDO::PARAM_INT);
+            $stmt1->bindParam(':naam', $data['naam'], PDO::PARAM_STR);
+            $stmt1->bindParam(':contactpersoon', $data['contactpersoon'], PDO::PARAM_STR);
+            $stmt1->bindParam(':leveranciernummer', $data['leveranciernummer'], PDO::PARAM_STR);
+            $stmt1->bindParam(':mobiel', $data['mobiel'], PDO::PARAM_STR);
+            $stmt1->execute();
+        
+            // SQL-query om de contactgegevens bij te werken
+            $sql2 = "UPDATE contact SET Straat = :straatnaam, Huisnummer = :huisnummer, Postcode = :postcode, Stad = :stad WHERE id = :id";
+            $stmt2 = $this->db->prepare($sql2);
+            $stmt2->bindParam(':id', $data['id'], PDO::PARAM_INT);
+            $stmt2->bindParam(':straatnaam', $data['straatnaam'], PDO::PARAM_STR);
+            $stmt2->bindParam(':huisnummer', $data['huisnummer'], PDO::PARAM_STR);
+            $stmt2->bindParam(':postcode', $data['postcode'], PDO::PARAM_STR);
+            $stmt2->bindParam(':stad', $data['stad'], PDO::PARAM_STR);
+            $stmt2->execute();
+        
+            // Commit de transactiesessie
+            $this->db->commit();
+        
             return true;
-        } else {
-            return false;
+        } catch (Exception $e) {
+            // Rollback de transactiesessie bij een fout
+            $this->db->rollBack();
+            // Log de fout en gooi een nieuwe uitzondering
+            error_log("Fout in updateLeverancier: " . $e->getMessage());
+            throw new Exception("Database query failed: " . $e->getMessage());
         }
     }
 }
