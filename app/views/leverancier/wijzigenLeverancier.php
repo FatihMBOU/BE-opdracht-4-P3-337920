@@ -56,3 +56,11 @@
             </div>
         </div>
     <?php } ?>
+
+    <div class="row mt-3">
+        <div class="col-12 text-right">
+            <a href="<?= URLROOT; ?>" class="btn btn-primary">Home</a>
+        </div>
+    </div>
+</div>
+<?php require_once APPROOT . '/views/includes/footer.php'; ?>
