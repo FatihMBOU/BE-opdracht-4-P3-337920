@@ -22,30 +22,6 @@ DROP DATABASE IF EXISTS jamin_a;
 CREATE DATABASE IF NOT EXISTS jamin_a DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE jamin_a;
 
--- Tabelstructuur voor tabel `country`
-DROP TABLE IF EXISTS country;
-CREATE TABLE IF NOT EXISTS country (
-  `Id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `Name` varchar(250) NOT NULL,
-  `CapitalCity` varchar(250) NOT NULL,
-  `Continent` varchar(250) NOT NULL,
-  `Population` int UNSIGNED NOT NULL,
-  `Zipcode` varchar(6) NOT NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Gegevens worden geëxporteerd voor tabel `country`
-INSERT INTO `country` (`Id`, `Name`, `CapitalCity`, `Continent`, `Population`, `Zipcode`) VALUES
-(1, 'Nederland', 'Amsterdam', 'Europa', 18000000, '2309CB'),
-(2, 'Argentini&euml;', 'Buenos Aires', 'Zuid-Amerika', 429496729, '2309CC'),
-(4, 'Japan', 'Tokio', 'Azi&euml;', 125700000, '8761EE'),
-(5, 'Zwitserlandd', 'Bern', 'Europa', 8703000, '2345RR'),
-(6, 'Noorwegen', 'Oslo', 'Europa', 5550203, '2314UT'),
-(11, 'Litouwen', 'Vilnius', 'Europa', 340000000, '9382YY'),
-(15, 'Marokko', 'Rabat', 'Afrika', 37500000, '1243HH'),
-(16, 'Nepal', 'Kathmandu', 'Azi&euml;', 30000000, '6534GG'),
-(17, 'Chili', 'Santiago', 'Zuid-Amerika', 18276870, '8347AA'),
-(18, 'Japan', 'Tokio', 'Azi&euml;', 125700000, '2342TT');
 
 -- Tabelstructuur voor tabel `Product`
 DROP TABLE IF EXISTS Product;

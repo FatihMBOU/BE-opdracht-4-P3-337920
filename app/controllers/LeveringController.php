@@ -28,28 +28,36 @@ class LeveringController extends Controller {
 
             if (empty($data['aantal_err']) && empty($data['datum_err'])) {
                 // Validated
-                if ($this->leveringModel->updateProduct($data['id'], $data['aantal'], $data['datum'])) {
-                    flash('levering_message', 'Product levering bijgewerkt');
-                    redirect('leverancier/geleverdeProducten');
-                } else {
-                    die('Er is iets misgegaan');
+                try {
+                    if ($this->leveringModel->updateProduct($data['id'], $data['aantal'], $data['datum'])) {
+                        flash('levering_message', 'Product levering bijgewerkt');
+                        redirect('leverancier/geleverdeProducten');
+                    } else {
+                        throw new Exception('Er is iets misgegaan bij het bijwerken van de productlevering.');
+                    }
+                } catch (Exception $e) {
+                    die($e->getMessage());
                 }
             } else {
                 // Load view with errors
                 $this->view('leverancier/nieuweLevering', $data);
             }
         } else {
-            $product = $this->leveringModel->getProductById($id);
+            try {
+                $product = $this->leveringModel->getProductById($id);
 
-            $data = [
-                'id' => $id,
-                'aantal' => '',
-                'datum' => '',
-                'aantal_err' => '',
-                'datum_err' => ''
-            ];
+                $data = [
+                    'id' => $id,
+                    'aantal' => '',
+                    'datum' => '',
+                    'aantal_err' => '',
+                    'datum_err' => ''
+                ];
 
-            $this->view('leverancier/nieuweLevering', $data);
+                $this->view('leverancier/nieuweLevering', $data);
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
         }
     }
 }

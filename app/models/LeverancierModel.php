@@ -166,4 +166,33 @@ class LeverancierModel
             throw new Exception("Database query failed: " . $e->getMessage());
         }
     }
+
+    public function getTotalLeveranciers()
+    {
+        try {
+            $sql = "SELECT COUNT(*) as total FROM leverancier";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_OBJ);
+            return $result->total;
+        } catch (Exception $e) {
+            error_log("Fout in getTotalLeveranciers: " . $e->getMessage());
+            throw new Exception("Database query failed: " . $e->getMessage());
+        }
+    }
+
+    public function getLeveranciersByPage($perPage, $offset)
+    {
+        try {
+            $sql = "SELECT id, naam, contactpersoon, leveranciernummer, mobiel FROM leverancier LIMIT :perPage OFFSET :offset";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':perPage', $perPage, PDO::PARAM_INT);
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        } catch (Exception $e) {
+            error_log("Fout in getLeveranciersByPage: " . $e->getMessage());
+            throw new Exception("Database query failed: " . $e->getMessage());
+        }
+    }
 }
