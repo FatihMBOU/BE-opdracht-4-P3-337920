@@ -131,8 +131,11 @@ class LeverancierModel
     public function updateLeverancier($data)
     {
         try {
-            // SQL-query om de leverancier bij te werken
-            $sql1 = "UPDATE leverancier SET Naam = :naam, Contactpersoon = :contactpersoon, Leveranciernummer = :leveranciernummer, Mobiel = :mobiel WHERE id = :id";
+            // Begin een transactiesessie
+            $this->db->beginTransaction();
+
+            // SQL-query om de leveranciergegevens bij te werken
+            $sql1 = "UPDATE leverancier SET naam = :naam, contactpersoon = :contactpersoon, leveranciernummer = :leveranciernummer, mobiel = :mobiel WHERE id = :id";
             $stmt1 = $this->db->prepare($sql1);
             $stmt1->bindParam(':id', $data['id'], PDO::PARAM_INT);
             $stmt1->bindParam(':naam', $data['naam'], PDO::PARAM_STR);
@@ -140,7 +143,7 @@ class LeverancierModel
             $stmt1->bindParam(':leveranciernummer', $data['leveranciernummer'], PDO::PARAM_STR);
             $stmt1->bindParam(':mobiel', $data['mobiel'], PDO::PARAM_STR);
             $stmt1->execute();
-        
+
             // SQL-query om de contactgegevens bij te werken
             $sql2 = "UPDATE contact SET Straat = :straatnaam, Huisnummer = :huisnummer, Postcode = :postcode, Stad = :stad WHERE id = :id";
             $stmt2 = $this->db->prepare($sql2);
@@ -150,10 +153,10 @@ class LeverancierModel
             $stmt2->bindParam(':postcode', $data['postcode'], PDO::PARAM_STR);
             $stmt2->bindParam(':stad', $data['stad'], PDO::PARAM_STR);
             $stmt2->execute();
-        
+
             // Commit de transactiesessie
             $this->db->commit();
-        
+
             return true;
         } catch (Exception $e) {
             // Rollback de transactiesessie bij een fout
