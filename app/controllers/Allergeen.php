@@ -11,7 +11,8 @@ class Allergeen extends BaseController {
             'title' => 'Overzicht Allergenen',
             'allergenen' => NULL,
             'producten' => [],
-            'message' => NULL
+            'message' => NULL,
+            'selectedAllergeen' => NULL
         ];
 
         try {
@@ -28,10 +29,18 @@ class Allergeen extends BaseController {
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $allergeen = trim($_POST['allergeen']);
+            $allergeenId = trim($_POST['allergeen']);
             try {
-                $producten = $this->allergeenModel->getProductenMetAllergeen($allergeen);
+                $producten = $this->allergeenModel->getProductenMetAllergeen($allergeenId);
                 $data['producten'] = $producten;
+
+                foreach ($data['allergenen'] as $allergeen) {
+                    if ($allergeen->Id == $allergeenId) {
+                        $data['selectedAllergeen'] = $allergeen->Naam;
+                        break;
+                    }
+                }
+
             } catch (Exception $e) {
                 error_log($e->getMessage());
                 $data['message'] = "Er is een fout opgetreden bij het ophalen van de producten: " . $e->getMessage();

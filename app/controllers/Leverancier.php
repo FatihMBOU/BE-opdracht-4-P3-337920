@@ -1,4 +1,3 @@
-
 <?php
 
 class Leverancier extends BaseController
@@ -254,5 +253,27 @@ class Leverancier extends BaseController
 
             $this->view('leverancier/nieuweLevering', $data);
         }
+    }
+
+    public function overzicht($productId) {
+        $data = [
+            'leverancier' => NULL,
+            'message' => NULL
+        ];
+
+        try {
+            $leverancier = $this->leverancierModel->getLeverancierByProductId($productId);
+
+            if (empty($leverancier)) {
+                throw new Exception("Geen resultaten gevonden");
+            }
+
+            $data['leverancier'] = $leverancier;
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $data['message'] = "Er is een fout opgetreden in de database: " . $e->getMessage();
+        }
+
+        $this->view('leverancier/index', $data);
     }
 }

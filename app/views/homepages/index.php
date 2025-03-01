@@ -10,7 +10,8 @@
             <!-- Links naar verschillende pagina's -->
             <a href="<?= URLROOT; ?>/magazijn/index">Overzicht magazijn Jamin</a> |
             <a href="<?= URLROOT; ?>/leverancier/index">Overzicht leveranciers</a> |
-            <a href="<?= URLROOT; ?>/leverancier/wijzigenLeverancier">Wijzigen Leverancier</a>
+            <a href="<?= URLROOT; ?>/leverancier/wijzigenLeverancier">Wijzigen Leverancier</a> |
+            <a href="<?= URLROOT; ?>/allergeen/index">Overzicht Allergenen</a>
 
         </div>
         <div class="col-2"></div>

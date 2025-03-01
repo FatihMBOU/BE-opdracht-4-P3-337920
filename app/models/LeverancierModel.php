@@ -7,8 +7,7 @@ class LeverancierModel
     public function __construct()
     {
         // Initialiseer de database-verbinding
-        $this->db = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS);
-        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->db = new Database;
     }
 
     public function getAllLeveranciers()
@@ -86,25 +85,14 @@ class LeverancierModel
     }
 
     public function getLeverancierByProductId($productId) {
-        try {
-            $sql = '
-                SELECT l.Naam, l.Contactpersoon, l.Mobiel, l.Leveranciernummer, COUNT(p.Id) AS AantalProducten, MAX(pl.DatumLevering) AS DatumEerstVolgendeLevering
-                FROM Leverancier l
-                JOIN ProductPerLeverancier pl ON l.Id = pl.LeverancierId
-                JOIN Product p ON pl.ProductId = p.Id
-                WHERE p.Id = :productId
-                GROUP BY l.Id';
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_OBJ);
-            $stmt->closeCursor(); // Sluit de vorige resultaatset
-            return $result;
-        } catch (Exception $e) {
-            // Log de fout en gooi een nieuwe uitzondering
-            error_log("Fout in getLeverancierByProductId: " . $e->getMessage());
-            throw new Exception("Database query failed: " . $e->getMessage());
-        }
+        $this->db->query('
+            SELECT l.Naam, l.Contactpersoon, l.Mobiel, l.Leveranciernummer
+            FROM leverancier l
+            JOIN productperleverancier ppl ON l.Id = ppl.LeverancierId
+            WHERE ppl.ProductId = :productId
+        ');
+        $this->db->bind(':productId', $productId);
+        return $this->db->single();
     }
 
     public function getLeverancierById($id)
