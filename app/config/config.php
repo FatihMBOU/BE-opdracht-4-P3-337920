@@ -11,7 +11,7 @@ define('DB_PASS', '');
 /**
  * De naam van de virtualhost
  */
-define('URLROOT', 'http://www.jamin-a.nl');
+define('URLROOT', 'http://jamin-a.nl');
 
 
 /**
