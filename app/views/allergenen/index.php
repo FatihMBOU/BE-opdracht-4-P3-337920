@@ -52,7 +52,7 @@
                                 <td><?= $product->allergeenNaam; ?></td>
                                 <td><?= $product->Omschrijving; ?></td>
                                 <td><?= $product->AantalAanwezig; ?></td>
-                                <td><a href="<?= URLROOT; ?>/leverancier/overzicht/<?= $product->productId; ?>"><img src="<?= URLROOT; ?>/img/question-sign.png" alt="Info" style="width: 20px; height: 20px;"></a></td>
+                                <td><a href="<?= URLROOT; ?>/leverancier/overzicht/<?= $product->productId; ?>"><button>?</button></a></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
